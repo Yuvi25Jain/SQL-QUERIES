@@ -1,0 +1,96 @@
+create database five ;
+use five ; 
+CREATE TABLE Students (
+    StudentID INT PRIMARY KEY,
+    StudentName VARCHAR(100)
+);
+
+/**/
+CREATE TABLE Courses (
+    CourseID INT PRIMARY KEY,
+    CourseName VARCHAR(100),
+    InstructorID INT
+);
+
+
+CREATE TABLE Instructors (
+    InstructorID INT PRIMARY KEY,
+    InstructorName VARCHAR(100)
+);
+
+
+CREATE TABLE Enrollments (
+    EnrollmentID INT PRIMARY KEY,
+    StudentID INT,
+    CourseID INT
+);
+INSERT INTO Students (StudentID, StudentName) VALUES
+(1, 'Yuvanshi'),
+(2, 'Vedika'),
+(3, 'Sheetal');
+
+
+-- Insert Sample Instructors
+INSERT INTO Instructors (InstructorID, InstructorName) VALUES
+(101, 'Khushboo'), -- abc = khushboo
+(102, 'Sarita'),	-- def = sarita
+(103, 'Gunjan');	-- xyz = gunjan
+
+-- Insert Sample Courses
+INSERT INTO Courses (CourseID, CourseName, InstructorID) VALUES
+(1001, 'Mathematics I', 101),
+(1002, 'History Basics', 102),
+(1003, 'Computer Science', 102);
+
+
+-- Insert Sample Enrollments
+INSERT INTO Enrollments (EnrollmentID, StudentID, CourseID) VALUES
+(1, 1, 1001), 
+(2, 2, 1003), 
+(3, 3, 1002);
+
+SELECT
+    S.StudentName,
+    C.CourseName
+FROM
+    Students S
+INNER JOIN
+    Enrollments E ON S.StudentID = E.StudentID
+INNER JOIN
+    Courses C ON E.CourseID = C.CourseID;
+    
+    
+SELECT
+    S.StudentName,
+    C.CourseName,
+    I.InstructorName
+FROM
+    Students S
+INNER JOIN
+    Enrollments E ON S.StudentID = E.StudentID
+INNER JOIN
+    Courses C ON E.CourseID = C.CourseID
+INNER JOIN
+    Instructors I ON C.InstructorID = I.InstructorID
+ORDER BY
+    S.StudentName, C.CourseName;
+    
+    
+SELECT
+    InstructorName
+FROM
+    Instructors
+WHERE
+    InstructorID IN (
+        SELECT
+            InstructorID
+        FROM
+            Courses
+        GROUP BY
+            InstructorID
+        HAVING
+            COUNT(CourseID) > 1
+    );
+
+
+
