@@ -1,0 +1,64 @@
+create database seven ;
+use seven ; 
+
+-- Create Products Table
+CREATE TABLE Products (
+    ProductID INT PRIMARY KEY,
+    ProductName VARCHAR(100),
+    Price DECIMAL(10, 2)
+);
+
+-- Create OrderItems Table (Represents items in customer orders)
+CREATE TABLE OrderItems (
+    OrderItemID INT PRIMARY KEY,
+    OrderID INT,
+    ProductID INT,
+    Quantity INT
+);
+
+
+-- Insert Sample Products
+INSERT INTO Products (ProductID, ProductName, Price) VALUES
+(101, 'Laptop', 1200.00),
+(102, 'Mouse', 25.00),
+(103, 'Keyboard', 75.00),
+(104, 'Monitor', 300.00),
+(105, 'Webcam', 50.00),
+(106, 'Headphones', 150.00);
+
+-- Insert Sample OrderItems
+INSERT INTO OrderItems (OrderItemID, OrderID, ProductID, Quantity) VALUES
+(1, 1001, 101, 1),  -- Laptop
+(2, 1001, 102, 1),  -- Mouse
+(3, 1002, 103, 2),  -- Keyboards
+(4, 1002, 105, 1),  -- Webcam
+(5, 1003, 101, 1),  -- Laptop
+(6, 1003, 102, 3),  -- Mice
+(7, 1004, 104, 1),  -- Monitor
+(8, 1005, 106, 2),  -- Headphones
+(9, 1005, 102, 1),  -- Mouse
+(10, 1006, 103, 1); -- Keyboard
+
+
+select * from Products ;
+select * from OrderItems ;
+
+SELECT
+    P.ProductName,
+    SUM(OI.Quantity) AS TotalQuantitySold
+FROM
+    Products P
+INNER JOIN
+    OrderItems OI ON P.ProductID = OI.ProductID
+GROUP BY
+    P.ProductName
+ORDER BY
+    TotalQuantitySold DESC;
+    
+    
+    SELECT
+    SUM(P.Price * OI.Quantity) AS TotalRevenue
+FROM
+    Products P
+INNER JOIN
+    OrderItems OI ON P.ProductID = OI.ProductID;
